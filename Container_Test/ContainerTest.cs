@@ -3,7 +3,7 @@ namespace Container_Test;
 public class ContainerTest
 {
     [Fact]
-    public void TestContainer()
+    public void TestContainer_Motorcycle()
     {
         // Arrange
         var container = new Container.Container();
@@ -17,10 +17,26 @@ public class ContainerTest
         //Assert
         Assert.Contains(result.Handlebars, "Motorcycle handlebars");
     }
+    
+    [Fact]
+    public void TestContainer_Car()
+    {
+        // Arrange
+        var container = new Container.Container();
+        container.Register<IMotorcycle, Motorcycle>();
+        container.Register<ICar, Car>();
+        
+        // Act
+        var result = (Car)container.GetInstance<ICar, Car>();
+
+
+        //Assert
+        Assert.Contains(result.Handlebars, "Car Steering Wheel");
+    }
 
     public class Car : ICar
     {
-        
+        public string Handlebars => "Car Steering Wheel";
     }
 
     public class Motorcycle : IMotorcycle
@@ -30,11 +46,9 @@ public class ContainerTest
 
     public interface ICar
     {
-        public string Handlebars => "Car Steering Wheel";
     }
 
     public interface IMotorcycle
     {
-        
     }
 }
